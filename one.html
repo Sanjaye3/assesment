@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JSON to HTML Generator</title>
+</head>
+<body>
+    <textarea id="inputJson" rows="10" cols="50" placeholder="Input JSON data here"></textarea><br><br>
+    <button id="generateButton">Generate HTML</button><br><br>
+    <textarea id="outputHtml" rows="10" cols="50" placeholder="Generated HTML will appear here" readonly></textarea>
+
+    <script>
+        document.getElementById("generateButton").addEventListener("click", function() {
+            var inputJson = document.getElementById("inputJson").value;
+            var outputHtml = generateHtmlFromJson(inputJson);
+            document.getElementById("outputHtml").value = outputHtml;
+        });
+
+        function generateHtmlFromJson(jsonData) {
+            try {
+                var parsedData = JSON.parse(jsonData);
+                var idSet = new Set();  
+                var html = "";
+
+                for (var item of parsedData) {
+                    if (idSet.has(item["id"])) {
+                        alert("Error: ID duplicated");
+                        return "Error: ID duplicated";
+                    }
+                    idSet.add(item["id"]);
+
+                    html += `
+<div class="root" data-id="${item["id"]}">
+    <span class="username">${item["username"]}</span>
+    <span class="video_name">${item["video_name"]}</span>
+</div>
+`;
+                }
+
+                return html;
+            } catch (error) {
+                return "Error: Invalid JSON input";
+            }
+        }
+    </script>
+</body>
+</html>
