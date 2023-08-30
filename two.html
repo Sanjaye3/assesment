@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Filter</title>
+ <style>
+     table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid black; 
+        }
+
+        th, td {
+            border: 1px solid black;  
+            padding: 8px;
+            text-align: left;
+        }
+ </style>
+</head>
+<body>
+    <header>
+    
+        <select id="filterDropdown">
+            <option value="Active">Active</option>
+            <option value="Retired">Retired</option>
+            <option value="Unknown">Unknown</option>
+            <option value="Destroyed">Destroyed</option>
+        </select>
+        <button id="loadButton" style="background-color: blue; font-size: large;margin:25px;">Load</button>
+    </header>
+    <main id="contentContainer">
+   
+    </main>
+    <script>
+     
+        const contentContainer = document.getElementById("contentContainer");
+        const filterDropdown = document.getElementById("filterDropdown");
+        const loadButton = document.getElementById("loadButton");
+
+        
+        let contentData = [
+            { "capsule_id": "capsule1", "status": "Active", "missions": 5, "details": "Details 1" },
+            { "capsule_id": "capsule2", "status": "Retired", "missions": 10, "details": "Details 2" },
+            { "capsule_id": "capsule3", "status": "Unknown", "missions": 3, "details": "Details 3" },
+            
+        ];
+
+   
+        function displayContent(items) {
+            contentContainer.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Capsule ID</th>
+                            <th>No of missions</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${items.map(item => `
+                            <tr>
+                                <td>${item.capsule_id}</td>
+                                <td>${item.missions}</td>
+                                <td>${item.details}</td>
+                            </tr>
+                        `).join("")}
+                    </tbody>
+                </table>
+            `;
+        }
+
+     
+        loadButton.addEventListener("click", () => {
+            const selectedStatus = filterDropdown.value;
+            const filteredItems = contentData.filter(item => item.status === selectedStatus);
+            displayContent(filteredItems);
+        });
+
+ 
+        displayContent(contentData);
+    </script>
+</body>
+</html>
